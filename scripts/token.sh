@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # token.sh --jwt            print an app JWT (10 min)
-# token.sh [owner/repo]     print a 1h installation token for that repo
+# token.sh [owner/repo]     print a 1h installation token for that repo only
+# token.sh --scope o/r      print the token request body (repo-scoped)
 #                           (default: origin of the current directory)
 # Key: macOS keychain (service muse-corva, account private-key, base64 PEM),
 # or MUSE_CORVA_KEY_FILE. App id: MUSE_CORVA_APP_ID or apps/muse-corva/app.json.
@@ -28,7 +29,9 @@ jwt(){
 api(){ curl -fsS -H "Authorization: Bearer $1" -H 'Accept: application/vnd.github+json' \
   -H 'X-GitHub-Api-Version: 2022-11-28' "${@:2}"; }
 
+scope(){ jq -nc --arg r "${1#*/}" '{repositories:[$r]}'; }
 if [ "${1:-}" = --jwt ]; then jwt; exit; fi
+if [ "${1:-}" = --scope ]; then scope "$2"; exit; fi
 
 repo=${1:-}
 if [ -z "$repo" ]; then
@@ -38,4 +41,4 @@ fi
 j=$(jwt)
 inst=$(api "$j" "$API/repos/$repo/installation" | jq -r .id) \
   || { echo "token.sh: muse-corva is not installed on $repo" >&2; exit 1; }
-api "$j" -X POST "$API/app/installations/$inst/access_tokens" | jq -r .token
+api "$j" -X POST -d "$(scope "$repo")" "$API/app/installations/$inst/access_tokens" | jq -r .token
