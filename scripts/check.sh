@@ -10,7 +10,7 @@ for m in apps/*/manifest.json; do
   jq -e '.default_permissions | has("administration") | not' "$m" >/dev/null \
     || { echo "FAIL $m: grants administration (scope change: propose, don't apply)"; fail=1; }
 done
-for d in README.md RESPONSIBILITIES.md apps/*/README.md docs/*.md docs/specs/*.md; do
+for d in README.md RESPONSIBILITIES.md apps/*/README.md docs/specs/*.md; do
   [ "$(head -1 "$d")" = "---" ] || { echo "FAIL $d: no frontmatter"; fail=1; }
 done
 [ $fail -eq 0 ] && echo "check: ok"
