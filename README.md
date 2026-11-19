@@ -24,7 +24,18 @@ and is the app's homepage.
 | [`apps/<slug>/`](apps/muse-corva/README.md) | per-app manifest + notes |
 | `gh-pages` branch | Pages site (Jekyll, served from branch root) |
 | [`docs/specs/`](docs/specs/) | specs (not published) |
-| [`scripts/check.sh`](scripts/check.sh) | `check`: manifests parse, docs carry frontmatter |
+| [`scripts/`](scripts/) | `register.py`, `token.sh`, `as-bot`; `check.sh`, `test.sh` |
+
+## Use it (local-first)
+```sh
+uv run scripts/register.py          # once: click Create on GitHub; key -> keychain
+# install on selected repos (URL printed), commit apps/muse-corva/app.json
+scripts/as-bot gh issue comment 1 -R mcint/muse-corva -b "caw"
+scripts/as-bot git push             # pushes and commits as muse-corva[bot]
+scripts/token.sh owner/repo         # raw 1h installation token
+scripts/test.sh && scripts/check.sh # tests + checks
+```
+Spec: [`docs/specs/2026-11-18-muse-corva-app.md`](docs/specs/2026-11-18-muse-corva-app.md).
 
 Conventions: Conventional Commits, scope = top-level dir or app slug
 (`feat(apps,muse-corva): …`). Frontmatter on every doc. Private keys never
