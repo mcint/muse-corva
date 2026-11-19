@@ -3,7 +3,7 @@ title: Responsibilities — what each app may do, and who answers for it
 date: 2026-11-18
 kind: policy
 tldr: >
-  MC owns every app and answers for its actions. Mega Cyb starts with
+  MC owns every app and answers for its actions. Muse Corva starts with
   catch-all repo permissions (minus administration) on selected repos;
   branch protection on main/dev, not the app's scope, is what keeps
   merges human. Narrowing happens per app later, visibly, in the manifest.
@@ -29,10 +29,10 @@ Apps act *for* MC, visibly *as themselves* (`<slug>[bot]`).
 ## Apps
 | app | slug | scope (to start) | job | status |
 |---|---|---|---|---|
-| Mega Cyb | `mega-cyb` | catch-all: contents, PRs, issues, actions, workflows, pages, discussions (write); no administration, checks or statuses | general agent hands on MC's repos | spec'd, not registered |
+| Muse Corva | `muse-corva` | catch-all: contents, PRs, issues, actions, workflows, pages, discussions (write); no administration, checks or statuses | general agent hands on MC's repos; magpie persona | spec'd, not registered |
 
 ## Narrowing later
 Catch-all is a deliberate *start*, not the end state (see
 `~/.claude/CLAUDE.md` → most-or-appropriate attenuation). When a job gets
-its own app, it gets only that job's permissions, and Mega Cyb drops
+its own app, it gets only that job's permissions, and Muse Corva drops
 them. Each change is a manifest diff + a row edit here.

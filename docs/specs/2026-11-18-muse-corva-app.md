@@ -1,17 +1,17 @@
 ---
-title: Spec — register and use Mega Cyb
+title: Spec — register and use Muse Corva
 date: 2026-11-18
 kind: spec
 tldr: >
-  Register Mega Cyb from apps/mega-cyb/manifest.json via GitHub's manifest
+  Register Muse Corva from apps/muse-corva/manifest.json via GitHub's manifest
   flow, store its private key in the macOS keychain, install on selected
   repos, and give agent sessions a token minter so gh/git act as
-  mega-cyb[bot]. Pages site = the app's homepage URL.
+  muse-corva[bot]. Pages site = the app's homepage URL.
 ---
-# Spec: Mega Cyb
+# Spec: Muse Corva
 
 ## Want
-Agent sessions push/comment/PR as `mega-cyb[bot]`, with tokens that expire,
+Agent sessions push/comment/PR as `muse-corva[bot]`, with tokens that expire,
 and nothing long-lived outside the keychain.
 
 ## Steps
@@ -25,9 +25,9 @@ and nothing long-lived outside the keychain.
    `gh api -X POST /app-manifests/<code>/conversions` → app id, slug,
    private key (PEM). Alternative: fill the web form by hand from the
    manifest.
-3. **Key**: `security add-generic-password -s muse-corva/mega-cyb -a pem -w "$(cat key.pem)"`, then shred the file.
+3. **Key**: `security add-generic-password -s muse-corva/app -a pem -w "$(cat key.pem)"`, then shred the file.
 4. **Install** on selected repos only. Protect `main`/`dev` (PR required).
-5. **Mint**: `scripts/token.sh mega-cyb <owner/repo>` → JWT (RS256, 10 min)
+5. **Mint**: `scripts/token.sh muse-corva <owner/repo>` → JWT (RS256, 10 min)
    → `POST /app/installations/<id>/access_tokens` → `GH_TOKEN` for that
    session. Not built yet.
 6. **Wire**: Claude Code project `env` sets `GH_TOKEN` via the minter;
@@ -38,5 +38,4 @@ and nothing long-lived outside the keychain.
 - Minter (when built): red-green against a recorded JWT header/claims shape.
 
 ## Open
-- Final display name / slug (`Mega Cyb` / `mega-cyb` vs others).
 - Commit author: bot vs MC + trailer (agent-identity seed, open).

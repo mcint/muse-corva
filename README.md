@@ -1,30 +1,33 @@
 ---
-title: Muse Corva — home of MC's GitHub Apps
+title: Muse Corva — MC's magpie GitHub App
 date: 2026-11-18
 kind: readme
 tldr: >
-  Home repo and GitHub Pages site for the GitHub Apps that let MC's agents
-  act on GitHub as themselves, not as mcint. First app: Mega Cyb
-  (catch-all permissions, to start). Muse Corva is the name of the start
-  and of the family; later apps get narrower scopes and their own names.
+  Repo and GitHub Pages site for Muse Corva, the GitHub App that lets MC's
+  agents act on GitHub as themselves (muse-corva[bot]), not as mcint.
+  Persona: a magpie, active, inquisitive, collecting. Catch-all
+  permissions to start; later corvid apps get narrower scopes, and the
+  repo may become Maestro Corvidae once there are a few.
 ---
 # Muse Corva
 
-*The corvid muse: the whisper at the start.* Home for the GitHub Apps that
-let MC's agents push, comment and open PRs as `<app>[bot]` instead of as
-`mcint`. Private to start; the Pages site lives on the **`gh-pages`** branch
-(worktree `.claude/worktrees/gh-pages`) and is each app's homepage.
+*The corvid muse: the whisper at the start.* Muse Corva is the GitHub App
+that lets MC's agents push, comment and open PRs as `muse-corva[bot]`
+instead of as `mcint`: a magpie that is active, inquisitive, and collects.
+The Pages site ([mcint.github.io/muse-corva](https://mcint.github.io/muse-corva/))
+lives on the **`gh-pages`** branch (worktree `.claude/worktrees/gh-pages`)
+and is the app's homepage.
 
 | path | what |
 |---|---|
 | [`RESPONSIBILITIES.md`](RESPONSIBILITIES.md) | what each app may do, who answers for it |
-| [`apps/<slug>/`](apps/mega-cyb/README.md) | per-app manifest + notes |
+| [`apps/<slug>/`](apps/muse-corva/README.md) | per-app manifest + notes |
 | `gh-pages` branch | Pages site (Jekyll, served from branch root) |
 | [`docs/specs/`](docs/specs/) | specs (not published) |
 | [`scripts/check.sh`](scripts/check.sh) | `check`: manifests parse, docs carry frontmatter |
 
 Conventions: Conventional Commits, scope = top-level dir or app slug
-(`feat(apps,mega-cyb): …`). Frontmatter on every doc. Private keys never
+(`feat(apps,muse-corva): …`). Frontmatter on every doc. Private keys never
 in git (`*.pem` ignored); they live in the macOS keychain. Local intent:
 `draft/intent` worktree at `.intent/` (never pushed). Agents: [CLAUDE.md](CLAUDE.md).
 
