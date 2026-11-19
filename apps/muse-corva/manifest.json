@@ -1,7 +1,7 @@
 {
-  "name": "Mega Cyb",
+  "name": "Muse Corva",
   "url": "https://mcint.github.io/muse-corva/",
-  "description": "MC's general agent hands: pushes branches, opens PRs and comments as itself. Part of Muse Corva.",
+  "description": "MC's magpie: an agent that pushes branches, opens PRs and comments as itself. Active, inquisitive, collecting.",
   "public": false,
   "default_permissions": {
     "metadata": "read",
