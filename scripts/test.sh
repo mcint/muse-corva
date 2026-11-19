@@ -18,4 +18,6 @@ now=$(date +%s); iat=$(jq .iat <<<"$claims")
 [ $((now - iat)) -ge 55 ] && [ $((now - iat)) -le 65 ] && ok "iat backdated 60s" || no "iat backdated 60s"
 printf '%s' "$s" | b64d > "$t/sig"
 printf '%s.%s' "$h" "$p" | openssl dgst -sha256 -verify "$t/pub.pem" -signature "$t/sig" >/dev/null && ok signature || no signature
+body=$(MUSE_CORVA_APP_ID=4242 scripts/token.sh --scope mcint/muse-corva 2>/dev/null || true)
+[ "$body" = '{"repositories":["muse-corva"]}' ] && ok "token scoped to one repo" || no "token scoped to one repo"
 exit $fail
