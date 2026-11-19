@@ -191,8 +191,17 @@ def main(argv=None, api=gh_api, now=time.time, sleep=time.sleep, out=print, head
             out(f"{now() - start:+7.1f}s  site still serves {iso(lm)}")
         return None
 
+    pushed = None                       # when the target landed on the branch (PR merge or push)
+    if target:
+        try:
+            acts = api(f"repos/{repo}/activity?ref={branch}&per_page=30") or []
+            pushed = next((ts(x["timestamp"]) for x in acts if x.get("after") == target), None)
+        except Exception:
+            pushed = None
+
     if target and latest and latest.get("commit") == target and latest.get("status") in FINISHED:
-        out(f"already {latest['status']}: {target[:7]} at {latest.get('updated_at')}")
+        took = f"; {ts(latest['updated_at']) - pushed:.0f}s after merge" if pushed else ""
+        out(f"already {latest['status']}: {target[:7]} at {latest.get('updated_at')}{took}")
         if latest["status"] != "built":
             return 1
         if a.live:
@@ -201,10 +210,12 @@ def main(argv=None, api=gh_api, now=time.time, sleep=time.sleep, out=print, head
         return 0
 
     tb = next((b for b in builds if target and b.get("commit") == target), None)
-    anchor = ts(tb["created_at"]) if tb else start
+    anchor = pushed or (ts(tb["created_at"]) if tb else start)
     expected = estimate(anchor, builds, rows)
     times = probe_times(start, expected, offsets, a.sparse, a.tail, a.timeout)
     what = f"{target[:7]} on {branch}" if target else f"a new build on {branch}"
+    if pushed:
+        out(f"merged/pushed {iso(pushed)} ({start - pushed:.0f}s ago)")
     out(f"waiting for {what} ({repo}); expected in ~{expected - start:.0f}s; "
         f"{len(times) - 1} probes planned, timeout {a.timeout:.0f}s")
     if a.dry_run:
@@ -232,7 +243,9 @@ def main(argv=None, api=gh_api, now=time.time, sleep=time.sleep, out=print, head
     created, updated = ts(latest["created_at"]), ts(latest["updated_at"])
     row = {"repo": repo, "target": target, "commit": latest["commit"], "anchor": anchor,
            "created": created, "updated": updated,
+           "pushed": pushed if latest["commit"] == target else None,
            "queue_s": (created - anchor) if latest["commit"] == target else None,
+           "total_s": (updated - pushed) if pushed and latest["commit"] == target else None,
            "duration_s": (latest.get("duration") or (updated - created) * 1000) / 1000,
            "expected": expected, "error_s": updated - expected, "probes": probes,
            "outcome": latest["status"], "at": iso(now())}
@@ -244,7 +257,8 @@ def main(argv=None, api=gh_api, now=time.time, sleep=time.sleep, out=print, head
         if live_s is None:
             code = 2
     append_log(row)
-    out(f"done: {latest['status']} {latest['commit'][:7]}; build {row['duration_s']:.0f}s, "
+    tot = f", {row['total_s']:.0f}s after merge" if row.get("total_s") is not None else ""
+    out(f"done: {latest['status']} {latest['commit'][:7]}{tot}; build {row['duration_s']:.0f}s, "
         f"estimate off by {row['error_s']:+.0f}s, {probes} probes")
     return code
 

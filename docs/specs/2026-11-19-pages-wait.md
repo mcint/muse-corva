@@ -36,7 +36,9 @@ scripts/pages-wait [--repo o/r] [--commit SHA | --change] [--no-change]
 - Exit: 0 built (and live, if asked); 1 build errored; 2 timeout.
 
 ## Estimate
-- anchor = `created_at` of the target's build if listed, else now.
+- anchor = when the target landed on the branch (`GET /repos/{o}/{r}/activity?ref=<branch>`,
+  PR merge or push; observed build start = landing + 1–2 s), else `created_at`
+  of the target's build, else now.
 - expected = anchor + median(queue delay from log, default 0)
   + median(last 20 built durations, default 40 s).
 - Probe times: now; every `sparse` s until the first dense point; then
@@ -44,8 +46,8 @@ scripts/pages-wait [--repo o/r] [--commit SHA | --change] [--no-change]
 
 ## Learning log
 `$MUSE_CORVA_CACHE` (default `~/.cache/muse-corva`)`/pages-wait.jsonl`, one
-JSON line per finished run: repo, commit, anchor, build created/updated,
-queue_s, duration_s, error_s (actual − expected), probes, outcome.
+JSON line per finished run: repo, commit, anchor, pushed, build created/updated,
+queue_s (landing → build start), total_s (landing → built), duration_s, error_s (actual − expected), probes, outcome.
 
 ## Tests
 `tests/test_pages_wait.py` (stdlib unittest, fake API + clock): schedule
