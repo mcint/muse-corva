@@ -14,7 +14,7 @@ for m in apps/*/manifest.json; do
       || { echo "FAIL $m: grants $k (could forge required checks on its own PRs)"; fail=1; }
   done
 done
-for d in README.md RESPONSIBILITIES.md apps/*/README.md docs/*.md docs/specs/*.md; do
+for d in README.md RESPONSIBILITIES.md apps/*/README.md docs/specs/*.md; do
   [ "$(head -1 "$d")" = "---" ] || { echo "FAIL $d: no frontmatter"; fail=1; }
 done
 [ $fail -eq 0 ] && echo "check: ok"

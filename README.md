@@ -12,15 +12,15 @@ tldr: >
 
 *The corvid muse: the whisper at the start.* Home for the GitHub Apps that
 let MC's agents push, comment and open PRs as `<app>[bot]` instead of as
-`mcint`. Private to start; the Pages site in [`docs/`](docs/index.md) is
-each app's homepage.
+`mcint`. Private to start; the Pages site lives on the **`gh-pages`** branch
+(worktree `.claude/worktrees/gh-pages`) and is each app's homepage.
 
 | path | what |
 |---|---|
 | [`RESPONSIBILITIES.md`](RESPONSIBILITIES.md) | what each app may do, who answers for it |
 | [`apps/<slug>/`](apps/mega-cyb/README.md) | per-app manifest + notes |
-| [`docs/`](docs/index.md) | Pages site (Jekyll, served from `/docs`) |
-| [`docs/specs/`](docs/specs/) | specs (excluded from the site) |
+| `gh-pages` branch | Pages site (Jekyll, served from branch root) |
+| [`docs/specs/`](docs/specs/) | specs (not published) |
 | [`scripts/check.sh`](scripts/check.sh) | `check`: manifests parse, docs carry frontmatter |
 
 Conventions: Conventional Commits, scope = top-level dir or app slug

@@ -9,6 +9,8 @@ Read README.md and RESPONSIBILITIES.md first.
 - **Permissions are scope; scope is MC's.** Changing an app's permissions,
   events, or installation targets is a trust-boundary change: propose it
   (diff the manifest + RESPONSIBILITIES.md), don't apply it on GitHub.
+- **Pages source is `gh-pages:/` only**, never `main:/docs`: main's docs/
+  holds unpublished specs and research. Enabling or changing Pages is MC's call.
 - **Spec first** for any new app or new surface: `docs/specs/`, same commit
   at latest.
 - **`check` before commit:** `scripts/check.sh` (needs `jq`).
