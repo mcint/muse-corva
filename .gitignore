@@ -1,0 +1,7 @@
+# app secrets never committed
+*.pem
+.env*
+# local coordination state (draft/intent worktree, .intent link)
+.claude/worktrees/
+.intent
+.DS_Store
