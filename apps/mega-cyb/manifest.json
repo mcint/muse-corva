@@ -10,8 +10,6 @@
     "issues": "write",
     "actions": "write",
     "workflows": "write",
-    "checks": "write",
-    "statuses": "write",
     "pages": "write",
     "discussions": "write"
   },

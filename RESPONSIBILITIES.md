@@ -19,6 +19,9 @@ Apps act *for* MC, visibly *as themselves* (`<slug>[bot]`).
   under the app's name, never MC's.
 - **Never merge to protected branches or approve PRs.** Approval is MC's
   act. Enforced by branch protection on `main`/`dev`, not by trust.
+- **Never report CI results.** No `checks`/`statuses` write: a bot that can
+  post green on its own PR defeats required checks. CI reports via its own
+  token. When adding required checks, set the expected source to the CI app.
 - **Short-lived credentials only.** Installation tokens (1h), minted from
   the keychain-held key on demand.
 - **Install on selected repos**, never "all repositories" by default.
@@ -26,7 +29,7 @@ Apps act *for* MC, visibly *as themselves* (`<slug>[bot]`).
 ## Apps
 | app | slug | scope (to start) | job | status |
 |---|---|---|---|---|
-| Mega Cyb | `mega-cyb` | catch-all: contents, PRs, issues, actions, workflows, checks, statuses, pages, discussions (write); no administration | general agent hands on MC's repos | spec'd, not registered |
+| Mega Cyb | `mega-cyb` | catch-all: contents, PRs, issues, actions, workflows, pages, discussions (write); no administration, checks or statuses | general agent hands on MC's repos | spec'd, not registered |
 
 ## Narrowing later
 Catch-all is a deliberate *start*, not the end state (see
