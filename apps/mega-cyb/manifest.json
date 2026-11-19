@@ -1,0 +1,19 @@
+{
+  "name": "Mega Cyb",
+  "url": "https://mcint.github.io/muse-corva/",
+  "description": "MC's general agent hands: pushes branches, opens PRs and comments as itself. Part of Muse Corva.",
+  "public": false,
+  "default_permissions": {
+    "metadata": "read",
+    "contents": "write",
+    "pull_requests": "write",
+    "issues": "write",
+    "actions": "write",
+    "workflows": "write",
+    "checks": "write",
+    "statuses": "write",
+    "pages": "write",
+    "discussions": "write"
+  },
+  "default_events": []
+}
