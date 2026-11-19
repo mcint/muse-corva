@@ -29,6 +29,22 @@ keychain.
 Overrides (for tests and other machines): `MUSE_CORVA_APP_ID`,
 `MUSE_CORVA_KEY_FILE` (PEM path instead of keychain).
 
+## Default in Claude Code (decided 2026-11-18: MC wants the bot by default)
+A user-level SessionStart hook runs `bin/session-start`, which appends
+`export PATH="<repo>/bin:$PATH"` to `$CLAUDE_ENV_FILE` (Claude Code's Bash
+tool only; MC's own terminal is untouched) and tells the session it acts as
+`muse-corva[bot]`. No-op if `app.json` or `bin/` is missing.
+
+| shim | behaviour |
+|---|---|
+| `bin/gh` | repo from `-R/--repo`, else `repos/<o>/<r>` in a `gh api` path, else `origin` of cwd. Installed → `GH_TOKEN` = repo-scoped token, exec real gh. Not installed / no repo → real gh as MC, one stderr line when a repo was named. `gh auth …` always passes through. |
+| `bin/git` | only `commit merge rebase cherry-pick revert am tag push fetch pull`; others exec real git at once. Installed origin → bot author/committer + credential helper answering with the token. Else plain git. |
+
+Tokens cached in `~/.cache/muse-corva/` (0600; 1h tokens reused until
+5 min before expiry; "not installed" cached 1h). `MUSE_CORVA_OFF=1`
+disables both shims. Test overrides: `MUSE_CORVA_REAL_GH`,
+`MUSE_CORVA_REAL_GIT`, `MUSE_CORVA_TOKEN_CMD`, `MUSE_CORVA_CACHE`.
+
 ## Steps for MC
 1. `uv run scripts/register.py`, click **Create GitHub App**.
 2. Install on selected repos (URL printed). Protect `main` (PR required).
@@ -44,9 +60,10 @@ Overrides (for tests and other machines): `MUSE_CORVA_APP_ID`,
 ## Tests
 - `scripts/check.sh`: manifest parses; required keys; no `administration`,
   `checks` or `statuses`; webhook inactive.
+- `scripts/test-shims.sh`: shim routing with fake gh/git/token (installed,
+  not installed, fast path, off switch, session-start).
 - `scripts/test.sh`: JWT from a throwaway key has the right header and
   claims, a 600s window, and a signature that verifies with the public key.
 
 ## Open
-- Wiring Claude Code sessions to as-bot by default (project `env`) vs
-  per-command opt-in.
+- Commits outside Claude Code still author as MC (by design for now).
