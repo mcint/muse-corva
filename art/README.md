@@ -24,5 +24,17 @@ tldr: >
 `default-avatar.svg` (+ `.png` render): GitHub's default identicon for
 `muse-corva[bot]`, `#e36209` on `#ffebda`. Saved from MC's download.
 
+## Transition (identicon → glory, 10% notches)
+`uv run art/transition.py` → `transition/{emerge,dissolve,fade}-00..10.png`
+(512px) + `*-sheet.png`. Step 00 = identicon, step 10 = `glory-eyes-night`.
+
+| style | how |
+|---|---|
+| `emerge` (**pick**) | visor first at 10%, then rays, then bird, dissolving in pixel by pixel; identicon sky fades to night |
+| `dissolve` | every pixel flips by rank (visor, rays, bird, sky); dithered sky mid-way |
+| `fade` | identicon as a transparent overlay, alpha 1 − k/10 |
+
+Plan: upload `emerge-00` now, one notch at a time later.
+
 GitHub has no API for app logos: upload by hand at
 https://github.com/settings/apps/muse-corva → Display information.
