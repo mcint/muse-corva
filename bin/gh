@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# gh as muse-corva[bot] where the app is installed; as MC elsewhere (spec: docs/specs/2026-11-18-muse-corva-app.md)
+set -uo pipefail
+. "$(dirname "$0")/_lib.sh"
+REAL_GH=$(real gh "${MUSE_CORVA_REAL_GH:-}") || { echo "muse-corva: real gh not found" >&2; exit 127; }
+REAL_GIT=$(real git "${MUSE_CORVA_REAL_GIT:-}")
+if off || [ "${1:-}" = auth ]; then exec "$REAL_GH" "$@"; fi
+repo=""; named=0; prev=""
+for a in "$@"; do
+  case "$prev" in -R|--repo) repo=$a; named=1 ;; esac
+  case "$a" in
+    --repo=*) repo=${a#--repo=}; named=1 ;;
+    repos/*/*|/repos/*/*) if [ -z "$repo" ]; then r=${a#/}; r=${r#repos/}; repo=$(printf '%s' "$r" | cut -d/ -f1-2); named=1; fi ;;
+  esac
+  prev=$a
+done
+[ -n "$repo" ] || repo=$(origin_repo)
+if [ -n "$repo" ] && tok=$(token_for "$repo"); then
+  GH_TOKEN=$tok exec "$REAL_GH" "$@"
+fi
+[ -n "$repo" ] && [ "$named" = 1 ] && echo "muse-corva: not installed on $repo; acting as you" >&2
+exec "$REAL_GH" "$@"
