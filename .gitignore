@@ -1,5 +1,8 @@
-# app secrets never committed
+# secrets live only in secrets/ (ignored but for its README); see check.sh
+secrets/*
+!secrets/README.md
 *.pem
+*.key
 .env*
 # local coordination state (draft/intent worktree, .intent link)
 .claude/worktrees/

@@ -3,8 +3,8 @@
 # token.sh [owner/repo]     print a 1h installation token for that repo only
 # token.sh --scope o/r      print the token request body (repo-scoped)
 #                           (default: origin of the current directory)
-# Key: macOS keychain (service muse-corva, account private-key, base64 PEM),
-# or MUSE_CORVA_KEY_FILE. App id: MUSE_CORVA_APP_ID or apps/muse-corva/app.json.
+# Key: MUSE_CORVA_KEY_FILE, else secrets/muse-corva.pem, else macOS keychain
+# (service muse-corva, account private-key, base64 PEM). App id: MUSE_CORVA_APP_ID or apps/muse-corva/app.json.
 set -euo pipefail
 here=$(cd "$(dirname "$0")/.." && pwd)
 API=https://api.github.com
@@ -15,7 +15,8 @@ app_id=${MUSE_CORVA_APP_ID:-}
 
 b64url(){ openssl base64 -A | tr '+/' '-_' | tr -d '='; }
 key(){
-  if [ -n "${MUSE_CORVA_KEY_FILE:-}" ]; then cat "$MUSE_CORVA_KEY_FILE"
+  local f=${MUSE_CORVA_KEY_FILE:-${MUSE_CORVA_SECRETS:-$here/secrets}/muse-corva.pem}
+  if [ -f "$f" ]; then cat "$f"
   else security find-generic-password -s muse-corva -a private-key -w | openssl base64 -d -A; fi
 }
 jwt(){
