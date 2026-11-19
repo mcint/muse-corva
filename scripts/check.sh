@@ -9,6 +9,8 @@ for m in apps/*/manifest.json; do
     || { echo "FAIL $m: missing name/url/metadata"; fail=1; }
   jq -e '.default_permissions | has("administration") | not' "$m" >/dev/null \
     || { echo "FAIL $m: grants administration (scope change: propose, don't apply)"; fail=1; }
+  jq -e '(.hook_attributes.active // false) == false' "$m" >/dev/null \
+    || { echo "FAIL $m: webhook active (nothing listens; local-first)"; fail=1; }
   for k in checks statuses; do
     jq -e --arg k "$k" '.default_permissions | has($k) | not' "$m" >/dev/null \
       || { echo "FAIL $m: grants $k (could forge required checks on its own PRs)"; fail=1; }
