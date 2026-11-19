@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Muse Corva</title>
-<meta name="description" content="Muse Corva: a GitHub App bot that Loren and Claude are building together, so Claude can work on GitHub as itself.">
+<meta name="description" content="Muse Corva: a GitHub App bot that lets Claude Code work on GitHub as itself.">
 <meta property="og:title" content="Muse Corva">
-<meta property="og:description" content="A magpie with a visor, on GitHub, in its own name. Loren × Claude.">
+<meta property="og:description" content="A magpie with a visor, on GitHub, in its own name.">
 <meta property="og:image" content="https://mcint.github.io/muse-corva/assets/dissolve-10.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,9 +108,9 @@
     <h1>MUSE CORVA</h1>
     <p class="tag">a magpie with a visor.<br>on GitHub, in its own name.</p>
     <p class="lede">
-      Muse Corva is <strong>Loren and Claude's collaboration</strong> to build a GitHub App bot,
-      so that when Claude works on Loren's repos it shows up as <em>itself</em>,
-      <code>muse-corva[bot]</code>, and not wearing Loren's name.
+      Muse Corva is a <strong>GitHub App bot</strong>. When Claude works on these repos it
+      shows up as <em>itself</em>, <code>muse-corva[bot]</code>, rather than under its
+      owner's account.
     </p>
     <ul class="chips">
       <li>bot <b>muse-corva[bot]</b></li>
@@ -131,8 +131,8 @@
     <div class="grid">
       <div class="card yes"><h3>Comments</h3><p>Talks on issues and PRs in its own voice.</p></div>
       <div class="card yes"><h3>Pushes branches</h3><p>Commits authored by <code>muse-corva[bot]</code>.</p></div>
-      <div class="card yes"><h3>Opens pull requests</h3><p>Proposes changes and waits for Loren.</p></div>
-      <div class="card no"><h3>Won't merge or approve</h3><p>Merging to <code>main</code> stays Loren's call.</p></div>
+      <div class="card yes"><h3>Opens pull requests</h3><p>Proposes changes and waits for review.</p></div>
+      <div class="card no"><h3>Won't merge or approve</h3><p>Merging to <code>main</code> stays with the repo owner.</p></div>
       <div class="card no"><h3>Won't fake CI</h3><p>No checks/statuses permission. CI speaks for itself.</p></div>
       <div class="card no"><h3>No admin</h3><p>Can't change repo settings or delete anything.</p></div>
     </div>
@@ -141,10 +141,10 @@
   <section aria-labelledby="how">
     <h2 id="how">HOW IT WORKS</h2>
     <ol class="flow">
-      <li>Registered once from Loren's machine. The private key lives in the <strong>macOS keychain</strong>, never in the repo.</li>
+      <li>Registered once from the owner's machine. The private key lives in the <strong>macOS keychain</strong>, never in the repo.</li>
       <li>On demand, a script signs a short JWT and trades it for a <strong>one-hour token for one repo</strong>.</li>
       <li>Every Claude Code session starts with small <code>gh</code> and <code>git</code> wrappers that use that token.</li>
-      <li>On GitHub it's <code>muse-corva[bot]</code>. Where the app isn't installed, the wrappers fall back to Loren, and say so.</li>
+      <li>On GitHub it's <code>muse-corva[bot]</code>. Where the app isn't installed, the wrappers fall back to the owner's account, and say so.</li>
     </ol>
   </section>
 
@@ -168,12 +168,12 @@
 
   <section aria-labelledby="nest">
     <h2 id="nest">COMING TO THE NEST</h2>
-    <p>Things the magpie will collect here. Some are reminders for Loren as we work together; most are aspirational.</p>
+    <p>Things the magpie will collect here. Mostly aspirational.</p>
     <div class="grid">
       <div class="card"><h3>Skills <span class="soon">soon</span></h3><p>What the bot can do, and how to ask it.</p></div>
       <div class="card"><h3>Motifs <span class="soon">soon</span></h3><p>Corvids, visors, glories: the visual and verbal language.</p></div>
-      <div class="card"><h3>To-dos <span class="soon mine">for Loren</span></h3><p>Next notch, next repo to install on, next app.</p></div>
-      <div class="card"><h3>Collaboration <span class="soon">soon</span></h3><p>How Loren and Claude work together, written to be argued with.</p></div>
+      <div class="card"><h3>To-dos <span class="soon">soon</span></h3><p>Next notch, next repo to install on, next app.</p></div>
+      <div class="card"><h3>Working notes <span class="soon">soon</span></h3><p>How this repo is run and decided, written to be argued with.</p></div>
     </div>
   </section>
 
@@ -181,7 +181,7 @@
 
 <footer>
   <div class="wrap">
-    <div class="sig">made by Loren &amp; Claude</div>
+    <div class="sig">caw.</div>
     <p>Source, responsibilities and specs: <a href="https://github.com/mcint/muse-corva">github.com/mcint/muse-corva</a>.
       Questions? Open an issue there.</p>
   </div>
@@ -201,7 +201,7 @@
     strip.appendChild(im);
   });
 
-  // scrubber: live notch by default; left -> right across the logo walks 0..10 (~9% of width per frame)
+  // scrubber: starts on the live notch; left -> right walks 0..10 (~9% of width each); stays where you leave it
   var logo = document.getElementById("logo"), scrub = document.getElementById("scrub");
   var ticks = document.getElementById("ticks"), readout = document.getElementById("readout");
   for (var t = 0; t < N; t++) { var sp = document.createElement("span"); if (t === LIVE) sp.className = "live"; ticks.appendChild(sp); }
@@ -212,7 +212,7 @@
     for (var t = 0; t < N; t++) ticks.children[t].classList.toggle("on", t <= k);
     var pct = k * 10;
     readout.innerHTML = k === LIVE ? "<b>notch " + k + "</b> · live now · hover or drag across to scrub"
-                                   : "<b>notch " + k + "</b> · " + pct + "% magpie" + (k === 0 ? " (GitHub's identicon)" : k === N - 1 ? " (full glory)" : "");
+                                   : "<b>notch " + k + "</b> · " + pct + "% magpie" + (k === 0 ? " (GitHub's identicon)" : k === N - 1 ? " (full glory)" : "") + " · live is notch " + LIVE;
     scrub.setAttribute("aria-valuenow", k);
     scrub.setAttribute("aria-valuetext", "notch " + k + " of 10" + (k === LIVE ? " (live)" : ""));
   }
@@ -223,14 +223,11 @@
   }
   scrub.addEventListener("pointermove", function (e) { at(e.clientX); });
   scrub.addEventListener("pointerdown", function (e) { scrub.setPointerCapture(e.pointerId); at(e.clientX); });
-  scrub.addEventListener("pointerleave", function () { show(LIVE); });
-  scrub.addEventListener("pointerup", function (e) { if (e.pointerType !== "mouse") show(LIVE); });
   scrub.addEventListener("keydown", function (e) {
     var k = { ArrowLeft: cur - 1, ArrowDown: cur - 1, ArrowRight: cur + 1, ArrowUp: cur + 1, Home: 0, End: N - 1 }[e.key];
     if (k === undefined) return;
     e.preventDefault(); show(Math.max(0, Math.min(N - 1, k)));
   });
-  scrub.addEventListener("blur", function () { show(LIVE); });
   show(LIVE);
 })();
 </script>
