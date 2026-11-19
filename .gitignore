@@ -8,3 +8,5 @@ secrets/*
 .claude/worktrees/
 .intent
 .DS_Store
+# python bytecode
+__pycache__/
