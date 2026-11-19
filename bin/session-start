@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Claude Code SessionStart hook: put muse-corva's gh/git first on PATH for this session.
+here=$(cd "$(dirname "$0")/.." && pwd)
+[ -f "$here/apps/muse-corva/app.json" ] && [ -x "$here/bin/gh" ] || exit 0
+[ -n "${CLAUDE_ENV_FILE:-}" ] || exit 0
+{ echo "export PATH=\"$here/bin:\$PATH\""; echo "export MUSE_CORVA_ACTIVE=1"; } >> "$CLAUDE_ENV_FILE"
+echo "muse-corva: in this session gh and git act as muse-corva[bot] (MC's GitHub App) on repos where it is installed, and as MC elsewhere (with a stderr note when a repo is named). Prefix MUSE_CORVA_OFF=1 to act as MC. Comments made as the bot need no '<!-- claude -->' marker."
