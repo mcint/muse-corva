@@ -1,0 +1,3 @@
+#!/bin/sh
+# pages-wait: wait for a GitHub Pages deploy (see scripts/pages_wait.py --help)
+exec uv run --quiet --script "$(dirname "$0")/pages_wait.py" "$@"

@@ -24,7 +24,7 @@ and is the app's homepage.
 | [`apps/<slug>/`](apps/muse-corva/README.md) | per-app manifest + notes |
 | `gh-pages` branch | Pages site (Jekyll, served from branch root) |
 | [`docs/specs/`](docs/specs/) | specs (not published) |
-| [`scripts/`](scripts/) | `register.py`, `token.sh`, `as-bot`; `check.sh`, `test.sh` |
+| [`scripts/`](scripts/) | `register.py`, `token.sh`, `as-bot`, `pages-wait`; `check.sh`, `test*.sh` |
 
 ## Use it (local-first)
 ```sh
@@ -33,7 +33,8 @@ uv run scripts/register.py          # once: click Create on GitHub; key -> keych
 scripts/as-bot gh issue comment 1 -R mcint/muse-corva -b "caw"
 scripts/as-bot git push             # pushes and commits as muse-corva[bot]
 scripts/token.sh owner/repo         # raw 1h installation token
-scripts/test.sh && scripts/check.sh # tests + checks
+scripts/pages-wait --live           # after merging to gh-pages: wait until the site serves it
+scripts/test.sh && scripts/check.sh # tests + checks (+ python3 -m unittest discover -s tests)
 ```
 Spec: [`docs/specs/2026-11-18-muse-corva-app.md`](docs/specs/2026-11-18-muse-corva-app.md).
 
