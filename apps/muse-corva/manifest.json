@@ -13,5 +13,9 @@
     "pages": "write",
     "discussions": "write"
   },
-  "default_events": []
+  "default_events": [],
+  "hook_attributes": {
+    "url": "https://mcint.github.io/muse-corva/",
+    "active": false
+  }
 }
