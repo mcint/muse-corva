@@ -2,15 +2,20 @@
 title: Muse Corva
 date: 2026-11-18
 kind: site
-tldr: Landing page for MC's GitHub Apps.
+tldr: Homepage for Muse Corva, MC's magpie GitHub App.
 ---
 # Muse Corva
 
-The corvid muse: a family of GitHub Apps that let MC's agents act on
-GitHub as themselves.
+A GitHub App that lets MC's agents act on GitHub as themselves, as
+`muse-corva[bot]`, instead of under MC's name.
 
-## Apps
-- **Mega Cyb** — general agent hands: branches, pull requests, comments.
-  Private; installed only on MC's own repositories.
+Think magpie: active, inquisitive, collecting. It goes and looks, brings
+back what it found, and says what it did in its own name.
 
-Contact: open an issue, or reach MC via [github.com/mcint](https://github.com/mcint).
+- **Where:** installed only on MC's own repositories.
+- **What:** pushes topic branches, opens pull requests, comments.
+- **What not:** never approves or merges protected branches, never posts
+  CI results, holds no admin rights. Approval stays with MC.
+
+Source and responsibilities: [github.com/mcint/muse-corva](https://github.com/mcint/muse-corva).
+Contact: open an issue there, or reach MC via [github.com/mcint](https://github.com/mcint).
