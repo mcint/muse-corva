@@ -30,11 +30,13 @@ tldr: >
 
 | style | how |
 |---|---|
-| `emerge` (**pick**) | visor first at 10%, then rays, then bird, dissolving in pixel by pixel; identicon sky fades to night |
-| `dissolve` | every pixel flips by rank (visor, rays, bird, sky); dithered sky mid-way |
+| `emerge` | visor first at 10%, then rays, then bird, dissolving in pixel by pixel; identicon sky fades to night |
+| `dissolve` (**MC's pick**) | every pixel flips by rank (visor, rays, bird, sky); whole-bird outline already at 10%, figure/ground flips around 30% |
 | `fade` | identicon as a transparent overlay, alpha 1 − k/10 |
 
-Plan: upload `emerge-00` now, one notch at a time later.
+**Current logo: `dissolve-01`** (uploaded 2026-11-18, badge background `#ffebda`).
+Next: `dissolve-02` … `-10`, one notch at a time. Around 06–07 switch the
+badge background to night `#12131a`.
 
 GitHub has no API for app logos: upload by hand at
 https://github.com/settings/apps/muse-corva → Display information.
