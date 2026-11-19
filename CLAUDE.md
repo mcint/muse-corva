@@ -13,7 +13,11 @@ Read README.md and RESPONSIBILITIES.md first.
   holds unpublished specs and research. Enabling or changing Pages is MC's call.
 - **Spec first** for any new app or new surface: `docs/specs/`, same commit
   at latest.
-- **`check` before commit:** `scripts/check.sh` (needs `jq`).
+- **`check` before commit:** `scripts/check.sh` (needs `jq`); the
+  pre-commit hook runs it, CI (`check`) runs it plus all `scripts/test*.sh`.
+- **Secrets only in `secrets/`** (ignored) or the keychain. Never elsewhere.
+- **Linear history:** rebase-merge only on `main`; `pull.rebase`/`merge.ff=only`
+  locally. MC (admin) can bypass.
 - **Intent:** `.intent/INTENT.md` (orphan `draft/intent`, worktree at
   `.claude/worktrees/intent`). `draft/*` branches are hook-enforced
   local-only (`core.hooksPath` → `.claude/worktrees/intent/hooks`).
