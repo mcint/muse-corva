@@ -27,8 +27,9 @@ def build(commit, status, created, updated=None, dur=36000):
 
 class FakeAPI:
     """`timeline` is a list of (from_time, latest_build); latest = last entry with from_time <= now."""
-    def __init__(self, clock, timeline, history=None, branch_head=HEAD, site=None):
+    def __init__(self, clock, timeline, history=None, branch_head=HEAD, site=None, pushed=None):
         self.clock, self.timeline, self.branch_head, self.site = clock, timeline, branch_head, site
+        self.pushed = pushed or {}          # commit -> push/merge epoch (activity API)
         self.history = history or [build(OLD, "built", T0 - 3600 + 60 * i) for i in range(5)]
         self.calls = []
     def latest(self):
@@ -44,6 +45,8 @@ class FakeAPI:
             return {"commit": {"sha": self.branch_head}}
         if "/commits/" in path:
             return {"sha": HEAD}
+        if "/activity?" in path:
+            return [{"after": c, "timestamp": ISO(t), "activity_type": "pr_merge"} for c, t in self.pushed.items()]
         if path.endswith("/pages/builds/latest"):
             return self.latest()
         if "/pages/builds" in path:
@@ -100,6 +103,20 @@ class Wait(unittest.TestCase):
         self.assertEqual(len(rows), 1); self.assertEqual(rows[0]["commit"], HEAD)
         self.assertEqual(rows[0]["outcome"], "built")
         self.assertIn("duration_s", rows[0]); self.assertIn("error_s", rows[0])
+
+    def test_anchor_is_merge_time_from_activity(self):
+        # started 20s after the merge: estimate should count from the merge, and log merge->build
+        c = Clock()
+        api = FakeAPI(c, [(0, build(HEAD, "building", T0 - 18)),
+                          (T0 + 16, build(HEAD, "built", T0 - 18, T0 + 16))],
+                      pushed={HEAD: T0 - 20})
+        code, out, rows = run([], api, c)
+        self.assertEqual(code, 0)
+        self.assertIn("merged", out)
+        self.assertAlmostEqual(rows[0]["pushed"], T0 - 20)
+        self.assertAlmostEqual(rows[0]["queue_s"], 2)
+        self.assertAlmostEqual(rows[0]["total_s"], 36)
+        self.assertLess(c.t, T0 + 30)          # dense probes landed near +16, not ~+36
 
     def test_change_backup_stops_on_other_commit(self):
         c = Clock(); other = "c" * 40
