@@ -1,0 +1,3 @@
+#!/bin/sh
+# activity: view or follow repo push/merge activity (see scripts/activity.py --help)
+exec uv run --quiet --script "$(dirname "$0")/activity.py" "$@"
