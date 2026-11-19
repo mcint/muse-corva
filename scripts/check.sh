@@ -23,6 +23,9 @@ done
 for f in $(git ls-files secrets/ | grep -v '^secrets/README.md$'); do
   echo "FAIL $f: tracked under secrets/ (git rm --cached it)"; fail=1
 done
+for f in $(git ls-files '*.pyc'); do
+  echo "FAIL $f: bytecode tracked (it's in .gitignore; git rm --cached it)"; fail=1
+done
 for f in $(git ls-files '*.pem' '*.key' '*.p12' '.env*'); do
   echo "FAIL $f: key/env file tracked"; fail=1
 done
